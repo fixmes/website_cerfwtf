@@ -7,11 +7,11 @@
   <style>
     :root {
       --bg: #f7f7f4;
-      --paper: #ffffff;
+      --paper: rgba(255, 255, 255, 0.78);
       --ink: #777777;
       --ink-dark: #5f5f5f;
       --line: #9a9a9a;
-      --soft: #eeeeea;
+      --soft: rgba(255, 255, 255, 0.54);
       --shadow: rgba(70, 70, 70, 0.14);
       --radius: 24px;
       --max-width: 980px;
@@ -29,11 +29,35 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(circle at top left, rgba(180, 180, 180, 0.16), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(180, 180, 180, 0.12), transparent 30%),
-        var(--bg);
+        radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.68), transparent 24%),
+        linear-gradient(120deg, #ffb6d9, #ffd48a, #fff59a, #9effc2, #9ad7ff, #c6a5ff, #ffb6d9);
+      background-size: 300% 300%;
       color: var(--ink-dark);
       font-family: "Trebuchet MS", "Comic Sans MS", system-ui, sans-serif;
+      animation: rainbowFlow 12s ease-in-out infinite;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.42), transparent 16%),
+        radial-gradient(circle at 76% 18%, rgba(255, 255, 255, 0.32), transparent 14%),
+        radial-gradient(circle at 52% 84%, rgba(255, 255, 255, 0.34), transparent 18%);
+      mix-blend-mode: soft-light;
+      animation: shimmer 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes rainbowFlow {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    @keyframes shimmer {
+      from { opacity: 0.45; transform: translateY(0); }
+      to { opacity: 0.8; transform: translateY(-18px); }
     }
 
     a {
@@ -43,8 +67,12 @@
 
     .page {
       width: min(100% - 32px, var(--max-width));
+      min-height: 100vh;
       margin: 0 auto;
-      padding: 42px 0 56px;
+      padding: 32px 0 42px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 28px;
     }
 
     .hero {
@@ -65,13 +93,14 @@
       min-height: 118px;
       display: flex;
       align-items: center;
+      justify-content: center;
     }
 
     .nickname-img {
       max-width: min(520px, 100%);
       max-height: 150px;
       object-fit: contain;
-      object-position: left center;
+      object-position: center;
       filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.03));
     }
 
@@ -163,6 +192,8 @@
       aspect-ratio: 1 / 1;
       display: grid;
       place-items: center;
+      cursor: pointer;
+      touch-action: manipulation;
     }
 
     .cat-face {
@@ -200,6 +231,21 @@
     @keyframes floaty {
       0%, 100% { transform: translateY(0) rotate(1deg); }
       50% { transform: translateY(-10px) rotate(-1deg); }
+    }
+
+    .cat-frame:hover .cat-face,
+    .cat-frame:hover .cat-fallback,
+    .cat-frame:focus-visible .cat-face,
+    .cat-frame:focus-visible .cat-fallback,
+    .cat-frame.is-spinning .cat-face,
+    .cat-frame.is-spinning .cat-fallback {
+      animation: catSpin 760ms ease-in-out 1;
+    }
+
+    @keyframes catSpin {
+      0% { transform: rotate(0deg) scale(1); }
+      45% { transform: rotate(190deg) scale(1.08); }
+      100% { transform: rotate(360deg) scale(1); }
     }
 
     .grid {
@@ -375,6 +421,30 @@
       text-align: center;
     }
 
+    .top-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .center-cat {
+      display: grid;
+      place-items: center;
+    }
+
+    .bottom-links {
+      width: min(100%, 540px);
+      margin: 0 auto;
+      padding: 20px;
+      display: grid;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.62);
+      border: 4px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0 var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
     @media (max-width: 760px) {
       .page {
         width: min(100% - 22px, var(--max-width));
@@ -412,108 +482,54 @@
 </head>
 <body>
   <main class="page">
-    <section class="hero" aria-label="Главный блок">
-      <div class="brand">
-        <div class="nickname-wrap">
-          <!-- Вставь сюда PNG ника. Пример: src="assets/nickname.png" -->
-          <img class="nickname-img" src="assets/nickname.png" alt="FIXMES" />
-          <h1 class="fallback-title">FIXMES</h1>
-        </div>
-
-        <article class="intro-card">
-          <h2 class="section-title">текст</h2>
-          <p class="intro-text">
-            Здесь будет короткий текст о тебе, твоём проекте или твоей странице.
-            Можно написать, кто ты, что делаешь, чем интересуешься и зачем сюда пришёл пользователь.
-          </p>
-        </article>
+    <header class="top-logo" aria-label="Никнейм">
+      <div class="nickname-wrap">
+        <!-- Вставь сюда PNG ника. Пример: src="assets/nickname.png" -->
+        <img class="nickname-img" src="assets/nickname.png" alt="FIXMES" />
+        <h1 class="fallback-title">FIXMES</h1>
       </div>
+    </header>
 
-      <div class="cat-block">
-        <div class="cat-frame">
-          <!-- Вставь сюда PNG морды кота. Пример: src="assets/cat-face.png" -->
-          <img class="cat-face" src="assets/cat-face.png" alt="Морда кота" />
-          <div class="cat-fallback" aria-hidden="true">:3</div>
-        </div>
+    <section class="center-cat" aria-label="Кот">
+      <div class="cat-frame" tabindex="0" aria-label="Покрутить кота" title="Покрутить кота">
+        <!-- Вставь сюда PNG морды кота. Пример: src="assets/cat-face.png" -->
+        <img class="cat-face" src="assets/cat-face.png" alt="Морда кота" />
+        <div class="cat-fallback" aria-hidden="true">:3</div>
       </div>
     </section>
 
-    <section class="grid" aria-label="Информация">
-      <article class="panel">
-        <h2>мои скиллы</h2>
-        <ul class="skills-list">
-          <li class="skill-item">
-            <span class="skill-mark"></span>
-            <span>
-              <span class="skill-name">скилл 1</span>
-              <span class="skill-note">краткое описание навыка, опыта или направления</span>
-            </span>
-          </li>
-          <li class="skill-item">
-            <span class="skill-mark"></span>
-            <span>
-              <span class="skill-name">скилл 2</span>
-              <span class="skill-note">например: иллюстрация, комьюнити, саппорт, тексты</span>
-            </span>
-          </li>
-          <li class="skill-item">
-            <span class="skill-mark"></span>
-            <span>
-              <span class="skill-name">скилл 3</span>
-              <span class="skill-note">ещё один пункт, который можно заменить</span>
-            </span>
-          </li>
-          <li class="skill-item">
-            <span class="skill-mark"></span>
-            <span>
-              <span class="skill-name">скилл 4</span>
-              <span class="skill-note">здесь может быть любой текст</span>
-            </span>
-          </li>
-        </ul>
-      </article>
-
-      <article class="panel">
-        <h2>заметки</h2>
-        <p class="intro-text">
-          Ещё один плейсхолдер под текст: мини-био, статус, описание проекта,
-          список услуг, контакты или короткий манифест.
-        </p>
-        <p class="small-text">
-          Текст можно удалить или заменить на другой блок. Весь сайт лежит в одном файле index.html.
-        </p>
-      </article>
-    </section>
-
-    <div class="chain-divider" aria-label="Декоративная цепь">
-      <!-- Вставь сюда PNG цепей. Пример: src="assets/chains.png" -->
-      <img class="chain-img" src="assets/chains.png" alt="Декоративная цепь" />
-      <div class="chain-fallback" aria-hidden="true">
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-    </div>
-
-    <section class="panel" aria-label="Ссылки">
-      <h2>ссылки</h2>
-      <div class="links-list">
-        <a class="link-card" href="https://example.com" target="_blank" rel="noreferrer">
-          <span class="checkbox">✓</span>
-          <span>ссылка 1</span>
-        </a>
-        <a class="link-card" href="https://example.com" target="_blank" rel="noreferrer">
-          <span class="checkbox">✓</span>
-          <span>ссылка 2</span>
-        </a>
-        <a class="link-card" href="mailto:yourmail@example.com">
-          <span class="checkbox">✓</span>
-          <span>почта / контакт</span>
-        </a>
-      </div>
-    </section>
-
-    <footer class="footer">
-      © FIXMES — одностраничка для GitHub Pages
-    </footer>
+    <nav class="bottom-links" aria-label="Ссылки">
+      <a class="link-card" href="https://t.me/fixmes" target="_blank" rel="noreferrer">
+        <span class="checkbox">✓</span>
+        <span>телеграм</span>
+      </a>
+      <a class="link-card" href="https://vk.com/fixmes" target="_blank" rel="noreferrer">
+        <span class="checkbox">✓</span>
+        <span>вконтакте</span>
+      </a>
+      <a class="link-card" href="https://t.me/fixmesss" target="_blank" rel="noreferrer">
+        <span class="checkbox">✓</span>
+        <span>написать мне</span>
+      </a>
+    </nav>
   </main>
+
+  <script>
+    const catFrame = document.querySelector(".cat-frame");
+
+    if (catFrame) {
+      catFrame.addEventListener("click", () => {
+        catFrame.classList.remove("is-spinning");
+        void catFrame.offsetWidth;
+        catFrame.classList.add("is-spinning");
+      });
+
+      catFrame.addEventListener("animationend", (event) => {
+        if (event.animationName === "catSpin") {
+          catFrame.classList.remove("is-spinning");
+        }
+      });
+    }
+  </script>
 </body>
 </html>
