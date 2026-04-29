@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIXMES</title>
+  <style>
+    :root {
+      --bg: #f7f7f4;
+      --paper: #ffffff;
+      --ink: #777777;
+      --ink-dark: #5f5f5f;
+      --line: #9a9a9a;
+      --soft: #eeeeea;
+      --shadow: rgba(70, 70, 70, 0.14);
+      --radius: 24px;
+      --max-width: 980px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(180, 180, 180, 0.16), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(180, 180, 180, 0.12), transparent 30%),
+        var(--bg);
+      color: var(--ink-dark);
+      font-family: "Trebuchet MS", "Comic Sans MS", system-ui, sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(100% - 32px, var(--max-width));
+      margin: 0 auto;
+      padding: 42px 0 56px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .nickname-wrap {
+      min-height: 118px;
+      display: flex;
+      align-items: center;
+    }
+
+    .nickname-img {
+      max-width: min(520px, 100%);
+      max-height: 150px;
+      object-fit: contain;
+      object-position: left center;
+      filter: drop-shadow(0 8px 0 rgba(0, 0, 0, 0.03));
+    }
+
+    .fallback-title {
+      display: none;
+      margin: 0;
+      color: var(--ink);
+      font-size: clamp(64px, 13vw, 132px);
+      line-height: 0.85;
+      letter-spacing: -0.08em;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .nickname-img[src=""],
+    .nickname-img:not([src]) {
+      display: none;
+    }
+
+    .nickname-img[src=""] + .fallback-title,
+    .nickname-img:not([src]) + .fallback-title {
+      display: block;
+    }
+
+    .intro-card {
+      position: relative;
+      width: min(100%, 390px);
+      padding: 20px 22px 22px;
+      background: var(--paper);
+      border: 5px solid var(--line);
+      border-radius: 8px 18px 10px 12px;
+      box-shadow: 10px 10px 0 rgba(120, 120, 120, 0.11);
+      transform: rotate(-1deg);
+    }
+
+    .intro-card::before,
+    .intro-card::after {
+      content: "";
+      position: absolute;
+      background: var(--bg);
+      opacity: 0.9;
+      transform: rotate(3deg);
+    }
+
+    .intro-card::before {
+      width: 70px;
+      height: 7px;
+      left: 26px;
+      top: -8px;
+    }
+
+    .intro-card::after {
+      width: 48px;
+      height: 6px;
+      right: 32px;
+      bottom: -8px;
+    }
+
+    .section-title {
+      display: inline-block;
+      margin: 0 0 14px;
+      padding: 3px 12px 6px;
+      border: 4px solid var(--line);
+      border-radius: 4px 12px 5px 9px;
+      color: var(--ink);
+      font-size: clamp(28px, 5vw, 48px);
+      line-height: 1;
+      font-weight: 800;
+      transform: rotate(1deg);
+    }
+
+    .intro-text {
+      margin: 0;
+      color: var(--ink-dark);
+      font-size: 18px;
+      line-height: 1.55;
+    }
+
+    .cat-block {
+      display: flex;
+      justify-content: center;
+      align-items: end;
+      min-height: 320px;
+    }
+
+    .cat-frame {
+      position: relative;
+      width: min(100%, 360px);
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .cat-face {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 18px 0 rgba(0, 0, 0, 0.04));
+      animation: floaty 4s ease-in-out infinite;
+    }
+
+    .cat-face[src=""],
+    .cat-face:not([src]) {
+      display: none;
+    }
+
+    .cat-fallback {
+      width: 260px;
+      height: 260px;
+      display: none;
+      place-items: center;
+      border: 6px solid var(--line);
+      border-radius: 50%;
+      color: var(--ink);
+      font-size: 96px;
+      background: var(--paper);
+      box-shadow: 12px 12px 0 rgba(120, 120, 120, 0.12);
+      animation: floaty 4s ease-in-out infinite;
+    }
+
+    .cat-face[src=""] + .cat-fallback,
+    .cat-face:not([src]) + .cat-fallback {
+      display: grid;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) rotate(1deg); }
+      50% { transform: translateY(-10px) rotate(-1deg); }
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 22px;
+      margin-top: 28px;
+    }
+
+    .panel {
+      position: relative;
+      padding: 22px;
+      background: rgba(255, 255, 255, 0.82);
+      border: 4px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 8px 8px 0 var(--shadow);
+    }
+
+    .panel h2 {
+      margin: 0 0 16px;
+      color: var(--ink);
+      font-size: clamp(26px, 4vw, 40px);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .skills-list,
+    .links-list {
+      display: grid;
+      gap: 12px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .skill-item {
+      display: grid;
+      grid-template-columns: 34px 1fr;
+      gap: 12px;
+      align-items: start;
+      padding-bottom: 10px;
+      border-bottom: 3px solid rgba(150, 150, 150, 0.45);
+      color: var(--ink-dark);
+      font-size: 19px;
+      line-height: 1.35;
+    }
+
+    .skill-mark {
+      width: 28px;
+      height: 7px;
+      margin-top: 12px;
+      background: var(--line);
+      border-radius: 999px;
+      transform: rotate(-2deg);
+    }
+
+    .skill-name {
+      font-weight: 800;
+    }
+
+    .skill-note {
+      display: block;
+      margin-top: 3px;
+      font-size: 15px;
+      opacity: 0.78;
+    }
+
+    .chain-divider {
+      position: relative;
+      margin: 46px auto 30px;
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .chain-img {
+      width: min(720px, 96%);
+      max-height: 92px;
+      object-fit: contain;
+      opacity: 0.76;
+    }
+
+    .chain-img[src=""],
+    .chain-img:not([src]) {
+      display: none;
+    }
+
+    .chain-fallback {
+      width: min(720px, 96%);
+      height: 54px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--line);
+    }
+
+    .chain-img[src=""] + .chain-fallback,
+    .chain-img:not([src]) + .chain-fallback {
+      display: flex;
+    }
+
+    .chain-fallback span {
+      width: 84px;
+      height: 44px;
+      border: 4px solid var(--line);
+      border-radius: 50%;
+      transform: rotate(-6deg);
+      background: rgba(255, 255, 255, 0.35);
+    }
+
+    .chain-fallback::before {
+      content: "";
+      position: absolute;
+      width: min(710px, 92%);
+      height: 4px;
+      background: var(--line);
+      opacity: 0.7;
+      z-index: -1;
+    }
+
+    .link-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-height: 58px;
+      padding: 12px 14px;
+      border: 4px solid transparent;
+      border-radius: 18px;
+      background: var(--soft);
+      color: var(--ink-dark);
+      font-size: 20px;
+      font-weight: 800;
+      transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+    }
+
+    .link-card:hover,
+    .link-card:focus-visible {
+      transform: translateY(-3px) rotate(-1deg);
+      border-color: var(--line);
+      background: #fff;
+      outline: none;
+    }
+
+    .checkbox {
+      width: 38px;
+      height: 38px;
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      border: 5px solid var(--line);
+      border-radius: 8px;
+      color: var(--line);
+      font-size: 30px;
+      line-height: 1;
+    }
+
+    .small-text {
+      margin: 16px 0 0;
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.5;
+      opacity: 0.86;
+    }
+
+    .footer {
+      margin-top: 34px;
+      padding-top: 20px;
+      border-top: 3px solid rgba(150, 150, 150, 0.42);
+      color: var(--ink);
+      font-size: 15px;
+      text-align: center;
+    }
+
+    @media (max-width: 760px) {
+      .page {
+        width: min(100% - 22px, var(--max-width));
+        padding-top: 26px;
+      }
+
+      .hero,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cat-block {
+        min-height: 230px;
+        order: -1;
+      }
+
+      .cat-frame {
+        width: min(290px, 86vw);
+      }
+
+      .nickname-wrap {
+        min-height: 90px;
+      }
+
+      .intro-card {
+        width: 100%;
+      }
+
+      .chain-fallback span {
+        width: 56px;
+        height: 34px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="hero" aria-label="Главный блок">
+      <div class="brand">
+        <div class="nickname-wrap">
+          <!-- Вставь сюда PNG ника. Пример: src="assets/nickname.png" -->
+          <img class="nickname-img" src="assets/nickname.png" alt="FIXMES" />
+          <h1 class="fallback-title">FIXMES</h1>
+        </div>
+
+        <article class="intro-card">
+          <h2 class="section-title">текст</h2>
+          <p class="intro-text">
+            Здесь будет короткий текст о тебе, твоём проекте или твоей странице.
+            Можно написать, кто ты, что делаешь, чем интересуешься и зачем сюда пришёл пользователь.
+          </p>
+        </article>
+      </div>
+
+      <div class="cat-block">
+        <div class="cat-frame">
+          <!-- Вставь сюда PNG морды кота. Пример: src="assets/cat-face.png" -->
+          <img class="cat-face" src="assets/cat-face.png" alt="Морда кота" />
+          <div class="cat-fallback" aria-hidden="true">:3</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid" aria-label="Информация">
+      <article class="panel">
+        <h2>мои скиллы</h2>
+        <ul class="skills-list">
+          <li class="skill-item">
+            <span class="skill-mark"></span>
+            <span>
+              <span class="skill-name">скилл 1</span>
+              <span class="skill-note">краткое описание навыка, опыта или направления</span>
+            </span>
+          </li>
+          <li class="skill-item">
+            <span class="skill-mark"></span>
+            <span>
+              <span class="skill-name">скилл 2</span>
+              <span class="skill-note">например: иллюстрация, комьюнити, саппорт, тексты</span>
+            </span>
+          </li>
+          <li class="skill-item">
+            <span class="skill-mark"></span>
+            <span>
+              <span class="skill-name">скилл 3</span>
+              <span class="skill-note">ещё один пункт, который можно заменить</span>
+            </span>
+          </li>
+          <li class="skill-item">
+            <span class="skill-mark"></span>
+            <span>
+              <span class="skill-name">скилл 4</span>
+              <span class="skill-note">здесь может быть любой текст</span>
+            </span>
+          </li>
+        </ul>
+      </article>
+
+      <article class="panel">
+        <h2>заметки</h2>
+        <p class="intro-text">
+          Ещё один плейсхолдер под текст: мини-био, статус, описание проекта,
+          список услуг, контакты или короткий манифест.
+        </p>
+        <p class="small-text">
+          Текст можно удалить или заменить на другой блок. Весь сайт лежит в одном файле index.html.
+        </p>
+      </article>
+    </section>
+
+    <div class="chain-divider" aria-label="Декоративная цепь">
+      <!-- Вставь сюда PNG цепей. Пример: src="assets/chains.png" -->
+      <img class="chain-img" src="assets/chains.png" alt="Декоративная цепь" />
+      <div class="chain-fallback" aria-hidden="true">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <section class="panel" aria-label="Ссылки">
+      <h2>ссылки</h2>
+      <div class="links-list">
+        <a class="link-card" href="https://example.com" target="_blank" rel="noreferrer">
+          <span class="checkbox">✓</span>
+          <span>ссылка 1</span>
+        </a>
+        <a class="link-card" href="https://example.com" target="_blank" rel="noreferrer">
+          <span class="checkbox">✓</span>
+          <span>ссылка 2</span>
+        </a>
+        <a class="link-card" href="mailto:yourmail@example.com">
+          <span class="checkbox">✓</span>
+          <span>почта / контакт</span>
+        </a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      © FIXMES — одностраничка для GitHub Pages
+    </footer>
+  </main>
+</body>
+</html>
