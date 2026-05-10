@@ -115,16 +115,6 @@
       transition: filter 0.18s ease, transform 0.18s ease;
     }
 
-    body.badge-hover .chromatic-target,
-    body.badge-hover .corp-link:not(.is-active) {
-      filter:
-        drop-shadow(-2px 0 var(--red))
-        drop-shadow(2px 0 var(--cyan))
-        brightness(1.08)
-        contrast(1.12);
-      transform: translateX(1px);
-    }
-
     .title {
       margin: 0;
       width: 100%;
@@ -629,70 +619,12 @@
       transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease, outline-color 0.2s ease;
     }
 
-    .corp-link[data-tooltip] {
-      overflow: visible;
-    }
-
     .corp-link img {
       display: block;
       width: 100%;
       height: 100%;
       object-fit: contain;
       image-rendering: pixelated;
-    }
-
-    .corp-link::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-      transform: translateX(-120%);
-      transition: transform 0.35s ease;
-      pointer-events: none;
-    }
-
-    .corp-link[data-tooltip]::before {
-      content: attr(data-tooltip);
-      position: absolute;
-      left: 50%;
-      bottom: calc(100% + 6px);
-      z-index: 6;
-      padding: 3px 6px;
-      background: rgba(38, 38, 38, 0.92);
-      color: #d8d8d8;
-      font-size: 9px;
-      line-height: 1;
-      white-space: nowrap;
-      opacity: 0;
-      transform: translate(-50%, 3px);
-      transition: opacity 0.16s ease, transform 0.16s ease;
-      pointer-events: none;
-    }
-
-    .corp-link[data-tooltip]:hover::before,
-    .corp-link[data-tooltip]:focus-visible::before {
-      opacity: 1;
-      transform: translate(-50%, 0);
-    }
-
-    .corp-link:hover,
-    .corp-link:focus-visible,
-    .corp-link.is-active,
-    .corp-link.is-copied {
-      z-index: 3;
-      transform: translateY(-4px) scale(1.025);
-      outline-color: #050505;
-      box-shadow:
-        0 0 20px rgba(0, 255, 102, 0.28),
-        -2px 0 0 rgba(255, 0, 80, 0.7),
-        2px 0 0 rgba(0, 220, 255, 0.7);
-    }
-
-    .corp-link:hover::after,
-    .corp-link:focus-visible::after,
-    .corp-link.is-active::after,
-    .corp-link.is-copied::after {
-      transform: translateX(120%);
     }
 
     .footer-note {
@@ -881,10 +813,37 @@
             href="https://otomir23.me/"
             target="_blank"
             rel="noreferrer"
-            aria-label="Copy otomir23 badge HTML"
-            data-copy-code="&lt;a href=&quot;https://otomir23.me/&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://otomir23.me/88x31.png&quot; alt=&quot;otomir23's 88x31 button&quot;&gt;&lt;/a&gt;"
+            aria-label="otomir23"
           >
             <img src="https://otomir23.me/88x31.png" alt="otomir23's 88x31 button" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://fennec.support/" target="_blank" rel="noreferrer" aria-label="fennec support">
+            <img src="https://fennec.support/88x31/current.gif" alt="fennec support" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://0x08.in/_" target="_blank" rel="noreferrer" aria-label="b4cksp4ce">
+            <img src="image/b4cksp4ce.gif" alt="b4cksp4ce" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://www.minecraft.net" target="_blank" rel="noreferrer" aria-label="Minecraft">
+            <img src="https://gapp.pw/img/88x31/minecraft.gif" alt="Minecraft" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://www.cultofthelamb.com/" target="_blank" rel="noreferrer" aria-label="Cult of the Lamb">
+            <img src="https://gapp.pw/img/88x31/fuck3.gif" alt="Cult of the Lamb" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://buran436.lol/" target="_blank" rel="noreferrer" aria-label="Buran436">
+            <img src="https://buran436.lol/Bages/Buran436.png" alt="Buran436" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://milkcool.ru/" target="_blank" rel="noreferrer" aria-label="milkcool">
+            <img src="https://milkcool.ru/buttons/fukkireta.gif" alt="milkcool" width="88" height="31" />
+          </a>
+
+          <a class="corp-link" href="https://www.blender.org/" target="_blank" rel="noreferrer" aria-label="Blender">
+            <img src="image/blender.gif" alt="Blender" width="88" height="31" />
           </a>
         </div>
       </div>
@@ -895,23 +854,23 @@
         <h2 class="sponsor-title" id="sponsors-title">sponsors</h2>
 
         <div class="corp-links" aria-label="Sponsors">
-          <a class="corp-link" href="#general-ringo" aria-label="Copy General Ringo badge HTML" data-tooltip="скопировать" data-copy-code="&lt;a href=&quot;https://cerf.wtf/#general-ringo&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://cerf.wtf/image/generalringo.png&quot; alt=&quot;General Ringo&quot;&gt;&lt;/a&gt;">
+          <a class="corp-link" href="#general-ringo" aria-label="General Ringo">
             <img src="image/generalringo.png" alt="General Ringo" width="88" height="31" />
           </a>
 
-          <a class="corp-link" href="#vex-industries" aria-label="Copy Vex Industries badge HTML" data-tooltip="скопировать" data-copy-code="&lt;a href=&quot;https://cerf.wtf/#vex-industries&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://cerf.wtf/image/vexindustries.png&quot; alt=&quot;Vex Industries&quot;&gt;&lt;/a&gt;">
+          <a class="corp-link" href="#vex-industries" aria-label="Vex Industries">
             <img src="image/vexindustries.png" alt="Vex Industries" width="88" height="31" />
           </a>
 
-          <a class="corp-link" href="#free-radicals" aria-label="Copy Free Radicals badge HTML" data-tooltip="скопировать" data-copy-code="&lt;a href=&quot;https://cerf.wtf/#free-radicals&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://cerf.wtf/image/freeradicals.png&quot; alt=&quot;Free Radicals&quot;&gt;&lt;/a&gt;">
+          <a class="corp-link" href="#free-radicals" aria-label="Free Radicals">
             <img src="image/freeradicals.png" alt="Free Radicals" width="88" height="31" />
           </a>
 
-          <a class="corp-link" href="#icc" aria-label="Copy Interstellar Communication Corporation badge HTML" data-tooltip="скопировать" data-copy-code="&lt;a href=&quot;https://cerf.wtf/#icc&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://cerf.wtf/image/icc.png&quot; alt=&quot;Interstellar Communication Corporation&quot;&gt;&lt;/a&gt;">
+          <a class="corp-link" href="#icc" aria-label="Interstellar Communication Corporation">
             <img src="image/icc.png" alt="Interstellar Communication Corporation" width="88" height="31" />
           </a>
 
-          <a class="corp-link" href="#lifetime-lease-remedies" aria-label="Copy Lifetime Lease Remedies badge HTML" data-tooltip="скопировать" data-copy-code="&lt;a href=&quot;https://cerf.wtf/#lifetime-lease-remedies&quot; target=&quot;_blank&quot; style=&quot;image-rendering:pixelated&quot;&gt;&lt;img src=&quot;https://cerf.wtf/image/remedies.png&quot; alt=&quot;Lifetime Lease Remedies&quot;&gt;&lt;/a&gt;">
+          <a class="corp-link" href="#lifetime-lease-remedies" aria-label="Lifetime Lease Remedies">
             <img src="image/remedies.png" alt="Lifetime Lease Remedies" width="88" height="31" />
           </a>
         </div>
@@ -976,62 +935,6 @@
       });
     }
 
-    const corpLinks = document.querySelectorAll(".corp-link");
-
-    const copyText = async (text) => {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(text);
-        return;
-      }
-
-      const textarea = document.createElement("textarea");
-      textarea.value = text;
-      textarea.setAttribute("readonly", "");
-      textarea.style.position = "fixed";
-      textarea.style.opacity = "0";
-      document.body.append(textarea);
-      textarea.select();
-      document.execCommand("copy");
-      textarea.remove();
-    };
-
-    corpLinks.forEach((link) => {
-      link.addEventListener("click", async (event) => {
-        const copyCode = link.dataset.copyCode;
-
-        if (!copyCode) {
-          return;
-        }
-
-        event.preventDefault();
-        await copyText(copyCode);
-
-        link.classList.add("is-copied");
-        window.setTimeout(() => {
-          link.classList.remove("is-copied");
-        }, 650);
-      });
-
-      link.addEventListener("mouseenter", () => {
-        document.body.classList.add("badge-hover");
-        link.classList.add("is-active");
-      });
-
-      link.addEventListener("mouseleave", () => {
-        document.body.classList.remove("badge-hover");
-        link.classList.remove("is-active");
-      });
-
-      link.addEventListener("focus", () => {
-        document.body.classList.add("badge-hover");
-        link.classList.add("is-active");
-      });
-
-      link.addEventListener("blur", () => {
-        document.body.classList.remove("badge-hover");
-        link.classList.remove("is-active");
-      });
-    });
   </script>
 </body>
 </html>
