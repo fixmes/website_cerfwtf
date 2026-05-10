@@ -263,12 +263,27 @@
       display: block;
     }
 
+    .my-badge {
+      margin: 14px 0 16px;
+      display: grid;
+      gap: 6px;
+      justify-items: start;
+    }
+
+    .my-badge img {
+      display: block;
+      width: 88px;
+      height: 31px;
+      image-rendering: pixelated;
+    }
+
     .ksyva-zone {
       margin-top: 14px;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 14px;
       align-items: end;
+      position: relative;
     }
 
     .ksyva-control {
@@ -324,22 +339,80 @@
       height: auto;
       display: block;
       transform-origin: 50% 60%;
+      will-change: transform;
       filter:
         drop-shadow(-1px 0 rgba(255, 0, 80, 0.4))
         drop-shadow(1px 0 rgba(0, 220, 255, 0.4))
         drop-shadow(0 0 8px rgba(100, 255, 106, 0.25));
     }
 
-    .spinner-character.spinning {
-      animation: ksyvaSpin 0.75s linear;
+    .milestone-effects {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      overflow: visible;
     }
 
-    @keyframes ksyvaSpin {
-      from {
-        transform: rotate(0deg);
+    .milestone-number {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      color: var(--accent);
+      font-size: clamp(30px, 6vw, 62px);
+      line-height: 1;
+      text-shadow:
+        0 0 10px rgba(100, 255, 106, 0.8),
+        -2px 0 rgba(255, 0, 80, 0.62),
+        2px 0 rgba(0, 220, 255, 0.62);
+      transform: translate(-50%, -50%);
+      animation: milestoneNumber 2s ease-out forwards;
+    }
+
+    .confetti-word {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      color: var(--text);
+      font-size: 12px;
+      line-height: 1;
+      white-space: nowrap;
+      text-shadow:
+        0 0 8px rgba(100, 255, 106, 0.65),
+        -1px 0 rgba(255, 0, 80, 0.5),
+        1px 0 rgba(0, 220, 255, 0.5);
+      transform: translate(-50%, -50%);
+      animation: confettiWord 2s ease-out forwards;
+    }
+
+    @keyframes milestoneNumber {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, 10%) scale(0.75);
       }
-      to {
-        transform: rotate(360deg);
+      18% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -150%) scale(1.16);
+      }
+    }
+
+    @keyframes confettiWord {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) rotate(0deg) scale(0.8);
+      }
+      14% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform:
+          translate(calc(-50% + var(--x)), calc(-50% + var(--y)))
+          rotate(var(--r))
+          scale(1);
       }
     }
 
@@ -744,7 +817,10 @@
               </div>
             </a>
 
-            <p class="prompt-line" aria-hidden="true">&gt;</p>
+            <div class="my-badge">
+              <div class="mini-label">my badge</div>
+              <img src="image/fixmes.gif" alt="fixmes badge" width="88" height="31" />
+            </div>
 
             <div class="ksyva-zone">
               <div class="ksyva-control">
@@ -756,6 +832,8 @@
               <a class="spinner-link" href="https://t.me/fixmes" target="_blank" rel="noreferrer">
                 <img src="image/spinner.png" alt="spinner" class="spinner-character" id="spinnerImage" />
               </a>
+
+              <div class="milestone-effects" id="milestoneEffects" aria-hidden="true"></div>
             </div>
           </section>
 
@@ -886,17 +964,127 @@
     const spinButton = document.getElementById("spinButton");
     const spinCount = document.getElementById("spinCount");
     const spinnerImage = document.getElementById("spinnerImage");
+    const milestoneEffects = document.getElementById("milestoneEffects");
 
     let count = 0;
+    let spinAnimation = null;
+
+    const milestoneWords = {
+      18: [],
+      27: [],
+      36: [],
+      42: ["смысл жизни!"],
+      67: ["67 !!!"],
+      69: ["ммм"],
+      228: [],
+      282: [],
+      300: [],
+      420: [],
+      666: [],
+      777: [],
+      911: [],
+      1000: [],
+      1337: [],
+      1488: [],
+      2048: ["и зачем ты это сделал"],
+      4096: ["все не смешно займись делами", "не хвастайся этим достижением"]
+    };
+
+    const baseConfettiWords = ["круто", "класс", "вау"];
+    const milestones = new Set(Object.keys(milestoneWords).map(Number));
+
+    const getSpinnerAngle = () => {
+      const transform = getComputedStyle(spinnerImage).transform;
+
+      if (!transform || transform === "none") {
+        return 0;
+      }
+
+      const matrix = new DOMMatrixReadOnly(transform);
+      const angle = Math.atan2(matrix.b, matrix.a) * (180 / Math.PI);
+
+      return angle < 0 ? angle + 360 : angle;
+    };
+
+    const randomBetween = (min, max) => Math.random() * (max - min) + min;
+
+    const showMilestone = (value) => {
+      if (!milestoneEffects) {
+        return;
+      }
+
+      milestoneEffects.textContent = "";
+
+      const number = document.createElement("div");
+      number.className = "milestone-number";
+      number.textContent = value;
+      milestoneEffects.append(number);
+
+      const words = [...baseConfettiWords, ...milestoneWords[value]];
+      const pieces = Math.min(18, 9 + words.length * 3);
+
+      for (let i = 0; i < pieces; i += 1) {
+        const word = document.createElement("div");
+        word.className = "confetti-word";
+        word.textContent = words[i % words.length];
+        word.style.setProperty("--x", `${randomBetween(-150, 150).toFixed(1)}px`);
+        word.style.setProperty("--y", `${randomBetween(-120, 95).toFixed(1)}px`);
+        word.style.setProperty("--r", `${randomBetween(-28, 28).toFixed(1)}deg`);
+        word.style.animationDelay = `${randomBetween(0, 0.2).toFixed(2)}s`;
+        milestoneEffects.append(word);
+      }
+
+      window.setTimeout(() => {
+        milestoneEffects.textContent = "";
+
+        if (value === 4096) {
+          count = 0;
+          spinCount.textContent = count;
+        }
+      }, 2000);
+    };
 
     if (spinButton && spinCount && spinnerImage) {
       spinButton.addEventListener("click", () => {
         count += 1;
         spinCount.textContent = count;
 
-        spinnerImage.classList.remove("spinning");
-        void spinnerImage.offsetWidth;
-        spinnerImage.classList.add("spinning");
+        if (milestones.has(count)) {
+          showMilestone(count);
+        }
+
+        const currentAngle = getSpinnerAngle();
+        const isSpinning = spinAnimation && spinAnimation.playState === "running";
+
+        if (spinAnimation) {
+          spinAnimation.cancel();
+        }
+
+        const remainder = currentAngle % 360;
+        const finishCurrentTurn = remainder === 0 ? 0 : 360 - remainder;
+        const targetAngle = isSpinning
+          ? currentAngle + finishCurrentTurn + 360
+          : currentAngle + 360;
+        const duration = isSpinning
+          ? Math.max(420, Math.min(760, (finishCurrentTurn + 360) * 1.1))
+          : 750;
+
+        spinAnimation = spinnerImage.animate(
+          [
+            { transform: `rotate(${currentAngle}deg)` },
+            { transform: `rotate(${targetAngle}deg)` }
+          ],
+          {
+            duration,
+            easing: "linear",
+            fill: "forwards"
+          }
+        );
+
+        spinAnimation.addEventListener("finish", () => {
+          spinnerImage.style.transform = `rotate(${targetAngle % 360}deg)`;
+          spinAnimation = null;
+        });
       });
     }
 
