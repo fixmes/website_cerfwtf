@@ -18,6 +18,14 @@
       src: url("https://wr.bksp.in/font/woff2/terminus.woff2");
     }
 
+    @font-face {
+      font-family: "Retron2000";
+      src: url("static/fonts/Retron2000.ttf") format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root {
       --bg: #030706;
       --panel: rgba(0, 10, 7, 0.92);
@@ -43,7 +51,7 @@
     body {
       margin: 0;
       min-height: 100vh;
-      font-family: "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
+      font-family: "Retron2000", "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
       font-weight: 800;
       color: var(--text);
       background:
@@ -52,6 +60,15 @@
       background-size: auto;
       overflow-x: hidden;
       position: relative;
+    }
+
+    body,
+    button,
+    input,
+    textarea,
+    select,
+    a {
+      font-family: "Retron2000", "JetBrains Mono", "Cascadia Code", "Consolas", "Courier New", monospace;
     }
 
     body::before {
@@ -512,7 +529,7 @@
 
     .lastfm-info {
       padding: 13px 14px;
-      font-family: Arial, Helvetica, sans-serif;
+      font-family: "Retron2000", "JetBrains Mono", "Courier New", monospace;
       font-weight: 900;
       text-transform: uppercase;
       display: flex;
@@ -711,7 +728,7 @@
       align-items: center;
       gap: 6px;
       color: rgba(214, 214, 214, 0.86);
-      font: 14px/1.35 Terminus, "JetBrains Mono", "Courier New", monospace;
+      font: 14px/1.35 "Retron2000", "JetBrains Mono", "Courier New", monospace;
       text-align: center;
     }
 
